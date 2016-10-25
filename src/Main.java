@@ -17,7 +17,7 @@ public class Main {
 
         int connectedRegions = eulerCharacteristicParser.getConnectedRegionsCount();
         int holes = eulerCharacteristicParser.getHolesCount();
-        int eulerCharacteristic = eulerCharacteristicParser.getEulerCaracteristic();
+        int eulerCharacteristic = eulerCharacteristicParser.getEulerCharacteristic();
 
         System.out.println(String.format("Parse time in ms: %d", parseTime));
 
@@ -28,15 +28,21 @@ public class Main {
 
     private static char[][] getExampleField() {
         return new char[][]{
-                {'O', 'O', 'O', 'O', 'O'},
-                {'O', 'X', 'X', 'X', 'O'},
-                {'O', 'X', 'O', 'X', 'O'},
-                {'O', 'X', 'O', 'X', 'O'},
-                {'O', 'X', 'X', 'X', 'O'},
-                {'O', 'X', 'O', 'X', 'O'},
-                {'O', 'X', 'O', 'X', 'O'},
-                {'O', 'X', 'X', 'X', 'O'},
-                {'O', 'O', 'O', 'O', 'O'},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'X', ' ', 'X', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'X', ' ', 'X', 'X', ' ', ' ', ' '},
+                {' ', ' ', ' ', 'X', 'X', ' ', 'X', 'X', ' ', ' '},
+                {' ', ' ', ' ', ' ', 'X', ' ', 'X', 'X', ' ', ' '},
+                {' ', ' ', ' ', ' ', 'X', 'X', ' ', 'X', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
         };
     }
 }

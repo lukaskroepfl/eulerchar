@@ -15,8 +15,9 @@ public class EulerCharacteristicParser {
                 if(field[y][x] == 'X') {
                     regions++;
                     this.removeConnectedRegionFromField(y, x, 'X');
-                } else if(field[y][x] == 'O') {
-                    if(this.isSurroundedByConnectedRegion(y, x, 'O')) {
+                } else if(field[y][x] == ' ') {
+                    if(!this.hasFieldPathToEdge(y, x, ' ', 0, 0)) {
+                        this.removeConnectedRegionFromField(y, x, ' ');
                         holes++;
                     }
                 }
@@ -25,7 +26,7 @@ public class EulerCharacteristicParser {
     }
 
     private void removeConnectedRegionFromField(int y, int x, char startFieldValue) {
-        changeFieldValueTo(y, x, Character.toLowerCase(startFieldValue));
+        changeFieldValueTo(y, x, 'x');
 
         for(int i=-1; i < 2; i++) {
             for(int j=-1; j < 2; j++) {
@@ -48,71 +49,50 @@ public class EulerCharacteristicParser {
         }
     }
 
-    private boolean isSurroundedByConnectedRegion(int y, int x, char startFieldValue) {
-        if(canReachAnyEdge(y, x, startFieldValue)) {
-            return false;
+    private boolean hasFieldPathToEdge(int y, int x, char startFieldValue, int iCalled, int jCalled) {
+        if(isEdge(y, x)) {
+            return true;
         }
 
-        changeFieldValueTo(y, x, Character.toLowerCase(startFieldValue));
-
-        for(int i=-1; i < 2; i++) {
-            for(int j=-1; j < 2; j++) {
+        for(int i = -1; i < 2; i++) {
+            for(int j = -1; j < 2; j++) {
                 if (i == 0 && j == 0) {
                     continue;
                 }
 
-                if(y-i < 0 || x-j < 0) {
+                if((i*-1) == iCalled && (j*-1) == jCalled) {
                     continue;
                 }
 
-                if(y-i > field.length-1 || x-j > field[y].length-1) {
-                    continue;
-                }
-
-                if (field[y-i][x-j] == startFieldValue) {
-                    isSurroundedByConnectedRegion(y-i, x-j, startFieldValue);
+                if (field[y+i][x+j] == startFieldValue) {
+                    if(hasFieldPathToEdge(y+i, x+j, startFieldValue, i, j)) {
+                        return true;
+                    }
                 }
             }
         }
 
-        return true;
+        return false;
     }
 
-    private boolean canReachAnyEdge(int y, int x, char startFieldValue) {
-        boolean canReachRightEdge = true;
-        boolean canReachLeftEdge = true;
-        boolean canReachUpperEdge = true;
-        boolean canReachLowerEdge = true;
-
-        for(int j = x; j < field[y].length; j++) {
-            if (field[y][j] != startFieldValue) {
-                canReachRightEdge = false;
-                break;
-            }
+    private boolean isEdge(int y, int x) {
+        if(y == 0) {
+            return true;
         }
 
-        for(int j = x; j >= 0; j--) {
-            if (field[y][j] != startFieldValue) {
-                canReachLeftEdge = false;
-                break;
-            }
+        if(x == 0) {
+            return true;
         }
 
-        for(int i = y; i >= 0; i--) {
-            if (field[i][x] != startFieldValue) {
-                canReachUpperEdge = false;
-                break;
-            }
+        if(y == (field.length - 1)) {
+            return true;
         }
 
-        for(int i = y; i < field.length; i++) {
-            if (field[i][x] != startFieldValue) {
-                canReachLowerEdge = false;
-                break;
-            }
+        if(x == (field[y].length - 1)) {
+            return true;
         }
 
-        return canReachRightEdge || canReachLeftEdge || canReachUpperEdge || canReachLowerEdge;
+        return false;
     }
 
     private void changeFieldValueTo(int y, int x, char value) {
@@ -127,7 +107,7 @@ public class EulerCharacteristicParser {
         return holes;
     }
 
-    public int getEulerCaracteristic() {
+    public int getEulerCharacteristic() {
         return regions - holes;
     }
 }
